@@ -1,0 +1,42 @@
+import time
+from datetime import datetime
+import platform
+import os
+
+def play_alarm():
+    print("\n⏰ ALARM! Wake up! Time is up!")
+
+    if platform.system() == "Windows":
+        import winsound
+        for _ in range(10):
+            winsound.Beep(1000, 1000)
+            time.sleep(0.5)
+    else:
+        # Linux: terminal bell
+        for _ in range(10):
+            print("\a", end="", flush=True)
+            time.sleep(1)
+
+def set_alarm():
+    alarm_time = input("Enter alarm time (HH:MM, 24-hour format): ")
+
+    try:
+        datetime.strptime(alarm_time, "%H:%M")
+    except ValueError:
+        print("Invalid time! Example: 08:30 or 21:45")
+        return
+
+    print(f"⏰ Alarm set for {alarm_time}")
+    print("Waiting for alarm...")
+
+    while True:
+        current_time = datetime.now().strftime("%H:%M")
+
+        if current_time == alarm_time:
+            play_alarm()
+            break
+
+        time.sleep(1)
+
+if __name__ == "__main__":
+    set_alarm()
